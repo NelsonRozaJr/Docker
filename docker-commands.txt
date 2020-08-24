@@ -1,0 +1,77 @@
+* Lista todas as imagens baixadas localmente:
+$ docker images
+
+* Remove a imagem especificada (id ou nome). A imagem não pode estar associada a nenhum container:
+$ docker image rm <image_id>
+
+* Lista os containeres em execução:
+$ docker container ps
+
+* Lista todos os containeres:
+$ docker container ps -a
+
+* Remove o container especificado (id ou nome). O container não pode estar em execução:
+$ docker container rm <container_id>
+
+* Remove todos os containeres parados:
+$ docker container prune
+
+* Inicia o container:
+$ docker container start <container_id>
+
+$ docker container start -ia <container_id>
+-ia: inicia o container no modo interativo com terminal atachado.
+
+* Executa um comando no container especificado:
+$ docker container exec <container_id> <command>
+
+* Para o container:
+$ docker container stop <container_id>
+
+$ docker container run hello-world
+Realiza as seguintes operações:
+* Download automático da imagem do docker hub se não foi encontrada localmente: docker image pull hello-world
+* Cria o container: docker container create hello-world
+* Inicia o container: docker container start <container_id>
+* Usa o modo interativo para executar o container: docker container exec -i <container_id> <command>
+
+* Cria um container baseado na imagem do alpine, executa um comando dentro do container, sai do container e exibe 
+o resultado do comando no terminal:
+$ docker container run alpine ls -l
+
+* Cria um container baseado na imagem do alpine de tag 3.12, com terminal aberto dentro do container:
+$ docker container run -it alpine:3.12
+
+* Cria um container baseado na imagem do alpine de tag 3.12, com terminal aberto dentro do container e exclui o 
+container ao sair do terminal:
+$ docker container run -it --rm alpine:3.12
+
+$ docker container run --name mycontainer -p 8080:80 -v /d/Projects/Docker/nginx/html:/usr/share/nginx/html -d nginx
+--name: nome do container
+-p: mapeamento de portas (host:container)
+-v: mapeamento de volume ou pasta (host:container)
+-d: executa o comando em segundo plano, evitando o travamento do terminal (detached)
+nginx (lê-se engine-x): nome da imagem
+
+$ docker container run --name mycontainer -it mcr.microsoft.com/dotnet/core/sdk
+--name: nome do container
+-it: modo interativo com terminal aberto dentro do container
+mcr.microsoft.com/dotnet/core/sdk: nome da imagem
+
+* Obtém informações do container, como uso de cpu, de memória, I/O, etc.:
+$ docker container stats <container_id>
+
+* Inspeciona o container:
+$ docker container inspect <container_id>
+
+$ docker image build -t debian/nginx:1.0 .
+-t: Nome e opcionalmente uma tag no formato 'name:tag'.
+.: Informa que o arquivo Dockerfile está no mesmo diretório em que o comando é executado.
+
+* Cria um container baseado na imagem criada acima:
+$ docker container run -d --name debian8 -p 8080:80 debian/nginx:1.0
+
+* Faz upload da imagem para o repositório do docker hub:
+$ docker login
+$ docker image tag debian/nginx:1.0 nelsonrzjunior/course:debian8
+$ docker image push nelsonrzjunior/course:debian8

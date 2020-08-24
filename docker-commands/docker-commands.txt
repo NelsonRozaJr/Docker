@@ -1,0 +1,231 @@
+CONTAINERS
+
+-- Exibe informações detalhadas do container especificado
+$ docker container inspect <container-name>
+
+-- Lista os containers em execução
+$ docker container ps
+
+-- Lista todos os containers
+$ docker container ps -a
+
+-- Exibe logs de um container
+$ docker logs <container-name>
+
+-- Renomeia um container
+$ docker container rename <old-name> <new-name>
+
+-- Remove o container mesmo se estiver em execução
+$ docker container rm --force <container-name>
+
+========================================================================================================================================
+
+IMAGES
+
+-- Lista as imagens baixadas no repositório local
+$ docker images
+
+-- Baixa para o repositório local somente a imagem especificada do docker hub
+$ docker image pull nginx
+
+-- Remove a imagem especificada do repositório local (ela não pode estar sendo utilizada por nenhum container)
+$ docker image rmi nginx
+
+-- Exibe informações detalhadas de uma imagem
+$ docker image inspect nginx
+
+========================================================================================================================================
+
+CRIAÇÃO DE CONTAINERS E BUILD DE IMAGES
+
+-- [ run(cria, inicia e executa o container) | -d (executa o container em modo de background) | --name (nome do container) | -p (mapeamento de portas entre host e container) 
+-- | -v (mapeamento de diretórios entre host e container) | nginx (imagem a partir da qual será gerada o container) ]
+$ docker container run -d --name ws1 -p 8080:80 -v /d/Projects/docker/nginx/html:/usr/share/nginx/html nginx
+
+-- [ build (Faz o build de uma imagem a partir de um Dockerfile) | -t (<repo> nome do repositorio da imagem a ser criada<:><tag> tag de versionamento) |
+-- . (ponto - informa que o Dockerfile está no diretório em que se executa o comando) ]
+$ docker build -t debian-example:1.0 .
+
+-- Cria um container a partir da imagem criada acima
+-- Acessível através do endereço 192.168.99.100:8080
+-- [ --name (nome do container) | debian-example:1.0 (nome da imagem gerada, inclusive com a informação de versionamento) ]
+$ docker container run -d -p 8080:80 --name ws2 debian-example:1.0
+
+========================================================================================================================================
+
+BUILD DE IMAGEM UTILIZANDO DOCKERFILE
+
+-- Build de imagem de dotnet core da Microsoft: https://hub.docker.com/_/microsoft-dotnet-core-runtime/
+-- Conteúdo do arquivo Dockerfile:
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+LABEL version="1.0" maintaner="Nelson Jr"
+WORKDIR /app
+COPY ./Mvc/dist .
+ENTRYPOINT [ "dotnet", "mvc.dll" ]
+
+-- docker build -t <img-name> . (o ponto significa que o arquivo dockerfile está no mesmo diretório em que o build está sendo executado)
+$ docker build -t aspnetcoremvc-example:1.0 .
+
+========================================================================================================================================
+
+UPLOAD DE CONTAINER PARA O DOCKER HUB
+
+-- Para gerar o token de senha: https://hub.docker.com/settings/security
+-- Somente necessário informar as credenciais na primeira vez
+-- docker tag <img>:<tag> <repo>:<img>-<tag>
+-- docker push <repo>:<img>-<tag>
+$ docker login --username nelsonrzjunior --password 053174f3-e3b5-4cff-b501-983198a34f27
+$ docker tag aspnetcoremvc-example:1.0 nelsonrzjunior/course:aspnetcoremvc-example-1.0
+$ docker push nelsonrzjunior/course:aspnetcoremvc-example-1.0
+
+-- Baixar imagens que estão no repositório (opcional)
+$ docker pull nelsonrzjunior/course:aspnetcoremvc-example-1.0
+$ docker pull nelsonrzjunior/course:debian-example-1.0
+
+========================================================================================================================================
+
+CRIAÇÃO DE VOLUMES
+
+-- Cria um volume de nome dbdata
+$ docker volume create dbdata
+
+-- Baixa a imagem do mysql do repositório do docker
+$ docker image pull mysql:8.0.20
+
+-- Inspeciona a imagem baixada para obtenção da informação do diretório que essa imagem usa para o volume (seçao "Volumes")
+-- Valor obtido: "/var/lib/mysql"
+$ docker image inspect mysql:8.0.20
+
+-- Cria um container baseado na imagem baixada do mysql, com mapeamento de volume entre o host (criado acima) e o container (obtido pelo inspect acima)
+-- Executa em segundo plano (-d), não travando o terminal
+-- Definição de variável de ambiente do container (-e MYSQL_ROOT_PASSWORD=123456), definindo uma senha para o usuário root do MySql
+-- Para o mysql aceitar requisições de interfaces de rede, usar a variável de ambiente -e bind-address=0.0.0.0
+-- Documentação: https://hub.docker.com/_/mysql
+$ docker container run -d --name mysql-example -v dbdata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql:8.0.20
+
+-- Cria uma sessão interativa com terminal anexado (-it) e executa um comando dentro do container em execução (bash)
+$ docker exec -it mysql-example bash
+
+-- Login no mysql do container um prompt solicitará a senha, no caso, 123456)
+root@68c13cecd078:/# mysql -u root -p
+
+-- Já dentro do mysql, exibe os databases
+mysql> show databases;
+
+-- Cria um database dentro do mysql
+mysql> create database TestDB;
+
+-- Sai do mysql
+mysql> exit
+
+-- Sai do container
+root@68c13cecd078:/# exit
+
+-- Para a execução do container
+$ docker container stop mysql-example
+
+-- Exclui o container; tudo o que existia nele será excluído, inclusive o banco TestDB
+$ docker container rm mysql-example
+
+-- Cria um novo container
+$ docker container run -d --name mysql-example -v dbdata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql:8.0.20
+
+-- Acessa o container novamente
+$ docker exec -it mysql-example bash
+
+-- Login no mysql
+root@756d15673d57:/# mysql -u root -p
+
+-- Lista os databases, nota-se no resultado o banco de dados TestDB
+mysql> show databases;
+
+========================================================================================================================================
+
+VOLUMES
+
+-- Lista os volumes existentes
+$ docker volume ls
+
+-- Exibe informações detalhadas de um volume
+$ docker volume inspect my-volume
+
+-- Remove um volume
+$ docker volume rm my-volume
+
+-- Remove todos os volumes (será exibido um prompt de confirmação)
+$ docker volume prune
+
+-- Criação de container com mapeamento de volumes
+[ -it (inicia o container com terminal anexado, para execução de comandos dentro do container) | -v (mapeamento de volume entre host e container) ]
+$ docker container run -it --name alp1 -v /d/Projects/docker/volumes/alp1:/usr/share alpine
+
+-- Criação de um arquivo texto com conteúdo dentro do container baseado no alpine
+/usr/share # echo 'Teste de volume no alpine...' > alpvol.txt
+
+========================================================================================================================================
+
+REDES VIRTUAIS OU DEFINIDAS POR SOFTWARE
+
+-- Redes padrão que o Docker disponibiliza. A rede "bridge" é a rede padrão para todos os containers quando são criados.
+-- Os containers que estão nessa rede podem se comunicar via protocolo TCP/IP
+$ docker network ls
+
+-- O Docker configura a rede virtual e atribui um endereço IP a cada container em execução, que são exibidos na seção "Containers"
+-- appcoremvc-example: IP 172.17.0.2
+-- mysql-example: IP 172.17.0.3
+
+$ docker network inspect bridge
+
+-- Cria um container a partir de uma imagem com a variável de ambiente DBHOST especificada para a aplicação mvc conectar o banco de dados mysql
+$ docker container run -d --name mvc-student -p 5000:80 -e DBHOST=172.17.0.2 appstudent:1.0
+
+========================================================================================================================================
+
+DOCKER COMPOSE
+
+-- Faz build ou rebuild dos containers
+$ docker-compose build
+
+-- Cria os containers e inicia a aplicação em segundo plano (-d)
+$ docker-compose up -d
+
+-- Remove os containers, redes e volumes descritos no arquivo de composição
+$ docker-compose down -v
+
+-- Exibe os containers
+$ docker-compose ps
+
+-- Exibe os logs de processamento do arquivo de composição
+$ docker-compose logs
+
+========================================================================================================================================
+
+DOCKER MACHINE
+
+-- Exibe a url da máquina virtual
+$ docker-machine url
+
+-- Para a máquina virtual
+$ docker-machine stop
+
+-- Inicia a máquina virtual
+$ docker-machine start
+
+========================================================================================================================================
+
+COMANDOS UNIX
+
+-- Listagem de diretórios
+$ ls -g
+
+-- Acessa o diretório especificado
+$ cd <dir-name>
+
+-- Cria o diretório especificado
+$ mkdir <dir-name>
+
+-- Remove o diretório especificado
+$ rmdir <dir-name>
+
+========================================================================================================================================
