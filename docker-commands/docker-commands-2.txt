@@ -75,3 +75,36 @@ $ docker container run -d --name debian8 -p 8080:80 debian/nginx:1.0
 $ docker login
 $ docker image tag debian/nginx:1.0 nelsonrzjunior/course:debian8
 $ docker image push nelsonrzjunior/course:debian8
+
+* Cria um volume (mapeamento de pastas entre host e container):
+$ docker container run -it --name alpinevol -v /d/Projects/docker/volumes/alpine:/usr/share alpine
+
+- A pasta 'Projects' é case-sensitive e deve ser definida exatamente como na VM (Shared Folders).
+- Para testar o volume criado acima:
+- Dentro do container, acessar o diretório mapeado com o comando: cd usr/share
+- Criar um arquivo com o comando: echo 'Teste de volume do alpine...' > file.txt
+- Verificar se o mesmo arquivo foi criado na pasta mapeada do host.
+
+* Cria um volume:
+$ docker volume create <volume_name>
+
+* Lista os volumes:
+$ docker volume ls
+
+* Inspeciona um volume
+$ docker image inspect <volume_name>
+
+* Cria um container a partir da imagem do MySQL, com um mapeamento entre um volume criado localmente e outro dentro do container, 
+junto com uma variável de ambiente que contém uma senha obrigatória para a conta de um super usuário:
+$ docker container run -d --name mysql -v DbData:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 mysql
+
+- Para obter o volume do container, basta inspecionar a imagem e obter o valor do elemento "Volumes":
+"Volumes": {
+    "/var/lib/mysql": {}
+}
+
+* Abre um terminal dentro do container criado acima:
+$ docker container exec -it mysql /bin/bash
+
+* Faz login no MySQL:
+/# mysql -u root -p
