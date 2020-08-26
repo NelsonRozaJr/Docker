@@ -31,11 +31,9 @@ namespace NetCoreStudent
             // Aplicação publicada através da linha de comando:
             // dotnet publish --configuration Release --output dist
 
-            // O host representa o IP do container "mysql-student" na rede bridge do Docker, e é obtido através do seguinte comando:
-            // $ docker network ls
-
             // Na criação do container que conterá essa aplicação, variáveis de ambiente são passadas como parâmetro:
             // $ docker container run -d --name mvc-student -p 5000:80 -e DBHOST=172.17.0.2 -e DBPASSWORD=123456 -e DBPORT=3306 appstudent:1.0
+            
             var host = Configuration["DBHOST"] ?? "127.0.0.1";
             var password = Configuration["DBPASSWORD"] ?? "pwd";
             var port = Configuration["DBPORT"] ?? "80";

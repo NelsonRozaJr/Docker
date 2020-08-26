@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NetCoreProduct.Models;
+using NetCoreProduct.Data;
 
 namespace NetCoreProduct
 {
@@ -24,6 +20,43 @@ namespace NetCoreProduct
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Criação da aplicação:
+            // dotnet new mvc
+
+            // Publicação da aplicação:
+            // dotnet publish --configuration Release --output dist
+
+            // Criação do volume que armazenará localmente os dados
+            // $ docker volume create ProductData
+
+            // Criação do container "mysql":
+            // $ docker container run -d --name mysql -v ProductData:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e bind-address=0.0.0.0 mysql
+
+            // Criação da imagem da aplicação criada utilizando o arquivo Dockerfile:
+            // $ docker image build -t netcoreproduct:2.0.0 .
+
+            // Obtenção das VARIÁVEIS DE AMBIENTE utilizadas para a criação do container da aplicação:
+
+            // 1. DBHOST: representa o IP do container na rede bridge do Docker, e é obtido inspecionando a seção "Containers:IPv4Address" do container "mysql":
+            // $ docker inspect network bridge
+
+            // 2. DBPORT: é obtida inspecionando a seção "Config:ExposedPorts" do container "mysql":
+            // $ docker container inspect mysql
+
+            // 3. DBPASSWORD: deve ter o mesmo valor da variável MYSQL_ROOT_PASSWORD utilizada na criação do container "mysql".
+
+            // Criação do container da aplicação:
+            // $ docker container run -d --name netcoreproduct -p 3000:80 -e DBHOST=172.17.0.2 -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0
+
+            // Acessar http://192.168.99.100:3000/
+
+            var host = Configuration["DBHOST"] ?? "127.0.0.1";
+            var password = Configuration["DBPASSWORD"] ?? "12345678";
+            var port = Configuration["DBPORT"] ?? "80";
+
+            services.AddDbContext<AppDbContext>(options => options.UseMySQL(
+                $"Server={host};Port={port};Database=ProductDB;Uid=root;Pwd={password};"));
+
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddControllersWithViews();
         }

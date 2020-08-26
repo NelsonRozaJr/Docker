@@ -71,6 +71,9 @@ $ docker image build -t debian/nginx:1.0 .
 * Cria um container baseado na imagem criada acima:
 $ docker container run -d --name debian8 -p 8080:80 debian/nginx:1.0
 
+* Exibe logs de criação do container:
+$ docker container logs <container_id>
+
 * Faz upload da imagem para o repositório do docker hub:
 $ docker login
 $ docker image tag debian/nginx:1.0 nelsonrzjunior/course:debian8
@@ -96,9 +99,12 @@ $ docker image inspect <volume_name>
 
 * Cria um container a partir da imagem do MySQL, com um mapeamento entre um volume criado localmente e outro dentro do container, 
 junto com uma variável de ambiente que contém uma senha obrigatória para a conta de um super usuário:
-$ docker container run -d --name mysql -v DbData:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 mysql
+$ docker container run -d --name mysql -v AppData:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e bind-address=0.0.0.0 mysql
+-d: executa o container em segundo plano
+-e: variáveis de ambiente. Para o mysql aceitar requisições de todas asinterfaces de rede, usar a variável de ambiente, utilizar 
+bind-address=0.0.0.0
 
-- Para obter o volume do container, basta inspecionar a imagem e obter o valor do elemento "Volumes":
+- Para obter o volume do container, basta inspecionar a imagem e obter o valor da seção "Config:Volumes":
 "Volumes": {
     "/var/lib/mysql": {}
 }
