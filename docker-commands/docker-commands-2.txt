@@ -42,11 +42,11 @@ $ docker container run alpine ls -l
 * Cria um container baseado na imagem do alpine de tag 3.12, com terminal aberto dentro do container:
 $ docker container run -it alpine:3.12
 
-* Cria um container baseado na imagem do alpine de tag 3.12, com terminal aberto dentro do container e exclui o 
-container ao sair do terminal:
+* Cria um container baseado na imagem do alpine de tag 3.12, com terminal aberto dentro do container (-it) e exclui o 
+container ao sair do terminal (--rm):
 $ docker container run -it --rm alpine:3.12
 
-$ docker container run --name mycontainer -p 8080:80 -v /d/Projects/Docker/nginx/html:/usr/share/nginx/html -d nginx
+$ docker container run --name mycontainer -p 8080:80 -v /d/Projects/Docker/volumes/nginx/html:/usr/share/nginx/html -d nginx
 --name: nome do container
 -p: mapeamento de portas (host:container)
 -v: mapeamento de volume ou pasta (host:container)
@@ -97,12 +97,16 @@ $ docker volume ls
 * Inspeciona um volume
 $ docker image inspect <volume_name>
 
+* Compartilhar o volume "Volume1" criado no container "container1" com o container "container2":
+$ docker container run -it --name container1 -v /Volume1 alpine
+$ docker container run -it --name container2 --volumes-from container1 alpine
+- Para posteriormente acessar os containeres criados acima: docker container start -ia <container_name>
+
 * Cria um container a partir da imagem do MySQL, com um mapeamento entre um volume criado localmente e outro dentro do container, 
 junto com uma variável de ambiente que contém uma senha obrigatória para a conta de um super usuário:
 $ docker container run -d --name mysql -v AppData:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e bind-address=0.0.0.0 mysql
 -d: executa o container em segundo plano
--e: variáveis de ambiente. Para o mysql aceitar requisições de todas asinterfaces de rede, usar a variável de ambiente, utilizar 
-bind-address=0.0.0.0
+-e: variáveis de ambiente. Para o MySQL aceitar requisições de todas as interfaces de rede, utilizar bind-address=0.0.0.0
 
 - Para obter o volume do container, basta inspecionar a imagem e obter o valor da seção "Config:Volumes":
 "Volumes": {
