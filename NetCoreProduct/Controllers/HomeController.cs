@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NetCoreProduct.Data;
 using NetCoreProduct.Models;
@@ -12,14 +13,18 @@ namespace NetCoreProduct.Controllers
 
         private readonly IProductRepository _productRepository;
 
-        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository)
+        private readonly IConfiguration _configuration;
+
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, IConfiguration configuration)
         {
             _logger = logger;
             _productRepository = productRepository;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
         {
+            ViewData["Host"] = _configuration["HOSTNAME"];
             return View(_productRepository.Products);
         }
 

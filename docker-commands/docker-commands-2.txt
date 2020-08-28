@@ -118,3 +118,19 @@ $ docker container exec -it mysql /bin/bash
 
 * Faz login no MySQL:
 /# mysql -u root -p
+
+* Exibe as redes virtuais do Docker. A rede "bridge" é a rede padrão na qual os containeres são incluídos.
+$ docker network ls
+
+* Inspeciona o driver de rede especificado:
+$ docker network inspect bridge
+
+* Cria uma rede customizada. O nome do container passa a agir como um host name.
+$ docker network create --driver bridge <my-network>
+- driver: o driver de rede a ser utilizado. Se não for informado, o Docker utiliza o driver "bridge".
+
+* Cria um container configurando uma rede personalizada:
+$ docker container run -it --network <my-network> --name <container_name> alpine
+
+* Associa um container a uma rede customizada:
+$ docker network connect <my-network> <container_name>
