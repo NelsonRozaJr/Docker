@@ -61,7 +61,7 @@ namespace NetCoreProduct
                 // Criação do container de banco de dados. Não existe mapeamento de portas, portanto o banco de dados não pode ser acessado via host, apenas via rede "back-end":
                 // $ docker container run -d --name mysql -v ProductData:/var/lib/mysql --network back-end -e MYSQL_ROOT_PASSWORD=12345678 -e bind-address=0.0.0.0 mysql
 
-                // Criação dos containeres da aplicação MVC, associando-os à rede "back-end":
+                // Criação dos containeres da aplicação MVC, associando-os à rede "back-end". Não existe mapeamento de portas, pois o responsável por mapeamento de portas será o container de load-balancer:
                 // $ docker container create --name netcoreproduct-01 --network back-end -e DBHOST=mysql -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0
                 // $ docker container create --name netcoreproduct-02 --network back-end -e DBHOST=mysql -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0
                 // $ docker container create --name netcoreproduct-03 --network back-end -e DBHOST=mysql -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0

@@ -128,7 +128,7 @@ $ docker network ls
 * Inspeciona o driver de rede especificado:
 $ docker network inspect bridge
 
-* Cria uma rede customizada. O nome do container passa a agir como um host name.
+* Cria uma rede personalizada. O nome do container passa a agir como um host name.
 $ docker network create --driver bridge <my-network>
 - driver: o driver de rede a ser utilizado. Se não for informado, o Docker utiliza o driver "bridge".
 
