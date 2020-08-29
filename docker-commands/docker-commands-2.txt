@@ -10,6 +10,9 @@ $ docker container ps
 * Lista todos os containeres:
 $ docker container ps -a
 
+* Lista os ids de todos os containeres:
+$ docker container ps -q
+
 * Remove o container especificado (id ou nome). O container não pode estar em execução:
 $ docker container rm <container_id>
 
