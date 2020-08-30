@@ -137,3 +137,18 @@ $ docker container run -it --network <my-network> --name <container_name> alpine
 
 * Associa um container a uma rede customizada:
 $ docker network connect <my-network> <container_name>
+
+* Verifica a sintaxe do arquivo de composição e faz build da imagem:
+$ docker-compose build
+
+* Processa o arquivo de composição em segundo plano e inicia a aplicação:
+$ docker-compose up -d
+
+* Verifica os containeres criados:
+$ docker-compose ps
+
+* Verifica os logs gerados:
+$ docker-compose logs
+
+* Remove os containeres, volumes e redes descritas no arquivo de composição:
+$ docker-compose down -v
