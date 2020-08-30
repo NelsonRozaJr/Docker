@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using NetCoreProduct.Configuration;
 using NetCoreProduct.Models;
 
 namespace NetCoreProduct.Data
@@ -11,11 +10,5 @@ namespace NetCoreProduct.Data
         }
 
         public DbSet<Product> Products { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());            
-        }
     }
 }

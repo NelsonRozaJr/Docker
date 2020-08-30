@@ -13,18 +13,18 @@ namespace NetCoreProduct.Controllers
 
         private readonly IProductRepository _productRepository;
 
-        private readonly IConfiguration _configuration;
+        private readonly string _hostname;
 
         public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, IConfiguration configuration)
         {
             _logger = logger;
             _productRepository = productRepository;
-            _configuration = configuration;
+            _hostname = configuration["HOSTNAME"];
         }
 
         public IActionResult Index()
         {
-            ViewData["Host"] = _configuration["HOSTNAME"];
+            ViewData["Host"] = _hostname;
             return View(_productRepository.Products);
         }
 

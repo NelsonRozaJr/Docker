@@ -25,7 +25,7 @@ $ docker container start <container_id>
 $ docker container start -ia <container_id>
 -ia: inicia o container no modo interativo com terminal atachado.
 
-* Executa um comando no container especificado:
+* Executa um comando em um container em execução:
 $ docker container exec <container_id> <command>
 
 * Para o container:
@@ -36,7 +36,7 @@ Realiza as seguintes operações:
 * Download automático da imagem do docker hub se não foi encontrada localmente: docker image pull hello-world
 * Cria o container: docker container create hello-world
 * Inicia o container: docker container start <container_id>
-* Usa o modo interativo para executar o container: docker container exec -i <container_id> <command>
+* Usa o modo interativo para executar um comando em um container em execução: docker container exec -i <container_id> <command>
 
 * Cria um container baseado na imagem do alpine, executa um comando dentro do container, sai do container e exibe 
 o resultado do comando no terminal:

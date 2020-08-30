@@ -1,0 +1,65 @@
+# Verifica a sintaxe do arquivo de composição e faz build da imagem: $ docker-compose build
+# Processa o arquivo de composição em segundo plano e inicia a aplicação: $ docker-compose up -d
+# Verifica os containeres criados: $ docker-compose ps
+# Verifica os logs gerados: $ docker-compose logs
+# Remove os containeres, volumes e redes descritas no arquivo de composição: $ docker-compose down -v
+# A aplicação estará disponível a partir do navegador no endereço: http://192.168.99.100:3200
+
+# Especifica a versão que o esquema "docker compose" utiliza
+version: "3"
+
+# Configura os volumes que serão utilizados pelos containeres
+volumes:
+    ProductData:
+
+# Configura as redes que serão utilizadas pelos containeres
+networks:
+    front-end:
+    back-end:
+
+# Define os containeres que serão utilizados
+services:
+    # Container de banco de dados, resultado do desmembramento do comando:
+    # $ docker container run -d --name mysql -v ProductData:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e bind-address=0.0.0.0 mysql
+    mysql:
+        # Define a imagem Docker que será utilizada para criar o container
+        image: "mysql"
+        # Especifica os volumes utilizados pelos containers e os diretórios envolvidos
+        volumes:
+            - ProductData:/var/lib/mysql
+            # Mapeamento entre script de inicialização criado na aplicação e o container mysql
+            - /d/Projects/Docker/NetCoreProduct/MySQLScripts:/docker-entrypoint-initdb.d
+        # Define a rede com as qual o container vai se conectar
+        networks:
+            - back-end
+        # Define as variáveis de ambiente que serão utilizadas quando o container for criado
+        environment:
+            - MYSQL_ROOT_PASSWORD=12345678
+            - bind-address=0.0.0.0
+
+    # Container da aplicação MVC, resultado do desmembramento do comando:
+    # $ docker container create --name netcoreproduct-01 --network back-end -e DBHOST=mysql -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0
+    mvc:
+        # Descreve ao Docker como criar a imagem para o container do serviço
+        build:
+            # Define o diretório do contexto que será utilizado para criar a imagem. Usa o diretório atual da aplicação MVC
+            context: .
+            # Especifica o arquivo para criar a imagem
+            dockerfile: Dockerfile
+        networks:
+            # Define as redes com as quais o container vai se conectar
+            - back-end
+            - front-end
+        ports:
+            # Define o mapeamento das portas
+            - 3200:80
+        environment:
+            # Define o nome do host
+            - DBHOST=mysql
+            # Define a senha do mysql
+            - DBPASSWORD=12345678
+            # Define a porta do mysql
+            - DBPORT=3306
+        depends_on:
+            # Diz ao Docker a ordem na qual os containers serão criados. Dessa forma o container mysql será iniciado antes do container mvc
+            - mysql

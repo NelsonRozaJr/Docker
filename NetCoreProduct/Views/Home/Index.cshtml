@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<Product>
 @{
-    ViewData["Title"] = $"ContainerId: {ViewData["Host"]}";
+    ViewData["Title"] = "Products";
 }
 
 <div class="m-1 p-1">
+    <h6 class="bg-info text-xs-center p-1 text-white">
+        Docker Container ID = @ViewData["Host"]
+    </h6>
     <h4 class="bg-secondary text-xs-center p-1 text-white">
         Products
     </h4>

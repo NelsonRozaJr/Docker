@@ -47,7 +47,7 @@ namespace NetCoreProduct
 
                 // 3. DBPASSWORD: deve ter o mesmo valor da variável MYSQL_ROOT_PASSWORD utilizada na criação do container de banco de dados.
 
-                // Criação do container da aplicação MVC:
+                // Criação do container da aplicação MVC, com mapeamento de portas entre host e container:
                 // $ docker container run -d --name netcoreproduct -p 3000:80 -e DBHOST=172.20.0.2 -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0
 
             // Criação do container de banco de dados e da aplicação MVC utilizando redes personalizadas do Docker:
@@ -74,10 +74,7 @@ namespace NetCoreProduct
                 // Inicia os containeres criados:
                 // $ docker container start netcoreproduct-01 netcoreproduct-02 netcoreproduct-03
 
-                // Verifica se todos os containeres criados estão na rede "back-end":
-                // $ docker network inspect back-end
-
-                // Criação do container de load-balancer utilizando uma imagem do HAProxy:
+                // Criação do container de load-balancer utilizando um arquivo de configuração no host:
                 // $ docker container run -d --name load-balancer --network front-end -v /d/Projects/Docker/NetCoreProduct/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg -p 3200:80 haproxy
 
             // Acessar http://192.168.99.100:3200/
