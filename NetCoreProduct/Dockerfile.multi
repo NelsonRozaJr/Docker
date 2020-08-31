@@ -1,0 +1,22 @@
+# Aplicação do recurso de multi-stage build, que gera imagens mais otimizadas (menor tamanho)
+# Estágio 1 - Base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
+RUN mkdir /app
+WORKDIR /app
+EXPOSE 80/TCP
+
+# Estágio 2 - Publish
+# Para a publicação é necessária uma imagem do SDK
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS publish
+WORKDIR /app
+COPY NetCoreProduct.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet publish --configuration Release --output dist
+
+# Estágio 3 - Final
+FROM base AS final
+WORKDIR /app
+# Copia todos os arquivos gerados no estágio 2 para a pasta padrão /dist
+COPY --from=publish /app/dist .
+ENTRYPOINT [ "dotnet", "NetCoreProduct.dll" ]

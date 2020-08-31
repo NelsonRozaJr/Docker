@@ -1,9 +1,9 @@
-# Verifica a sintaxe do arquivo de composição e faz build da imagem da aplicação: $ docker-compose -f docker-compose-dev.yml -p dev build
-# Processa o arquivo de composição em segundo plano e inicia a aplicação: $ docker-compose -f docker-compose-dev.yml -p dev up
+# Verifica a sintaxe do arquivo de composição e faz build da imagem da aplicação: $ docker-compose -f docker-compose-multi.yml -p multi build
+# Processa o arquivo de composição em segundo plano e inicia a aplicação: $ docker-compose -f docker-compose-multi.yml -p multi up
 # Verifica os containeres criados: $ docker-compose ps
 # Verifica os logs gerados: $ docker-compose logs
 # Remove os containeres, volumes e redes descritas no arquivo de composição: $ docker-compose down -v
-# A aplicação estará disponível a partir do navegador no endereço: http://192.168.99.100:3000
+# A aplicação estará disponível a partir do navegador no endereço: http://192.168.99.100:3100
 
 # Especifica a versão utilizada pelo esquema do "docker compose"
 version: "3"
@@ -44,13 +44,13 @@ services:
             # Define o diretório do contexto que será utilizado para criar a imagem. Usa o diretório atual da aplicação MVC
             context: .
             # Especifica o arquivo para criar a imagem
-            dockerfile: Dockerfile.dev
+            dockerfile: Dockerfile.multi
         networks:
             # Define a rede com as qual o container vai se conectar
             - back-end
         ports:
             # Define o mapeamento das portas
-            - 3000:80
+            - 3100:80
         environment:
             # Define o nome do host
             - DBHOST=mysql
