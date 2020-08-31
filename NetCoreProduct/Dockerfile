@@ -6,6 +6,7 @@ EXPOSE 80/tcp
 ENTRYPOINT [ "dotnet", "NetCoreProduct.dll" ]
 
 # Passos para a criação de um arquivo Dockerfile:
+
 # Definir uma imagem base
 # Definir informações para a imagem
 # Copiar os arquivos da pasta dist para a pasta do container (/app)

@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+RUN mkdir /app
+WORKDIR /app
+COPY NetCoreProduct.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet publish --configuration Release --output dist
+EXPOSE 80/TCP
+ENTRYPOINT [ "dotnet", "dist/NetCoreProduct.dll" ]
+
+# Passos para a criação de um arquivo Dockerfile que realizará o deploy dentro do container:
+
+# Usar uma imagem base do SDK
+# Criar o diretório /app dentro do container
+# Definir a pasta /app como padrão
+# Copiar o arquivo de projeto para a pasta /app
+# Restaurar no container as dependências cadastradas no arquivo de projeto
+# Copiar todos os arquivos do projeto do host para a pasta /app
+# Publicar a aplicação na pasta /dist dentro do container
+# Expor a pasta do container e definir em qual porta o servidor vai atender
+# Executar a aplicação a partir da pasta /dist

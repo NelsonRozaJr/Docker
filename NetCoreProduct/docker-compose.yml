@@ -5,7 +5,7 @@
 # Remove os containeres, volumes e redes descritas no arquivo de composição: $ docker-compose down -v
 # A aplicação estará disponível a partir do navegador no endereço: http://192.168.99.100:3200
 
-# Especifica a versão que o esquema "docker compose" utiliza
+# Especifica a versão utilizada pelo esquema do "docker compose"
 version: "3"
 
 # Configura os volumes que serão utilizados pelos containeres
@@ -22,16 +22,16 @@ services:
     # Container de banco de dados, resultado do desmembramento do comando:
     # $ docker container run -d --name mysql -v ProductData:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e bind-address=0.0.0.0 mysql
     mysql:
-        # Define um nome para o container
+        # Especifica um nome personalizado para o container, ao invés do nome padrão
         container_name: mysql
-        # Define a imagem Docker que será utilizada para criar o container
+        # Define a imagem padrão que será utilizada para criar o container
         image: "mysql"
         # Especifica os volumes utilizados pelos containers e os diretórios envolvidos
         volumes:
             - ProductData:/var/lib/mysql
-            # Mapeamento entre script de inicialização criado na aplicação e o container mysql
+            # Mapeamento entre script de inicialização criado na aplicação e o container do MySQL
             - /d/Projects/Docker/NetCoreProduct/MySQLScripts:/docker-entrypoint-initdb.d
-        # Define a rede com as qual o container vai se conectar
+        # Define a rede com a qual o container vai se conectar
         networks:
             - back-end
         # Define as variáveis de ambiente que serão utilizadas quando o container for criado
@@ -42,7 +42,7 @@ services:
     # Container da aplicação MVC, resultado do desmembramento do comando:
     # $ docker container create --name netcoreproduct-01 --network back-end -e DBHOST=mysql -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0
     mvc1:
-        # Define um nome para o container
+        # Especifica um nome personalizado para o container, ao invés do nome padrão
         container_name: netcoreproduct-01
         # Descreve ao Docker como criar a imagem para o container do serviço
         build:
@@ -62,13 +62,13 @@ services:
             # Define a porta do mysql
             - DBPORT=3306
         depends_on:
-            # Diz ao Docker a ordem na qual os containers serão criados. Dessa forma o container mysql será iniciado antes do container mvc
+            # Lista as dependências dos serviços. Dessa forma o container do MySQL será iniciado antes do container mvc
             - mysql
 
     # Container da aplicação MVC, resultado do desmembramento do comando:
     # $ docker container create --name netcoreproduct-02 --network back-end -e DBHOST=mysql -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0
     mvc2:
-        # Define um nome para o container
+        # Especifica um nome personalizado para o container, ao invés do nome padrão
         container_name: netcoreproduct-02
         # Descreve ao Docker como criar a imagem para o container do serviço
         build:
@@ -88,13 +88,13 @@ services:
             # Define a porta do mysql
             - DBPORT=3306
         depends_on:
-            # Diz ao Docker a ordem na qual os containers serão criados. Dessa forma o container mysql será iniciado antes do container mvc
+            # Lista as dependências dos serviços. Dessa forma o container do MySQL será iniciado antes do container mvc
             - mysql
 
     # Container da aplicação MVC, resultado do desmembramento do comando:
     # $ docker container create --name netcoreproduct-03 --network back-end -e DBHOST=mysql -e DBPASSWORD=12345678 -e DBPORT=3306 netcoreproduct:2.0.0
     mvc3:
-        # Define um nome para o container
+        # Especifica um nome personalizado para o container, ao invés do nome padrão
         container_name: netcoreproduct-03
         # Descreve ao Docker como criar a imagem para o container do serviço
         build:
@@ -114,13 +114,13 @@ services:
             # Define a porta do mysql
             - DBPORT=3306
         depends_on:
-            # Diz ao Docker a ordem na qual os containers serão criados. Dessa forma o container mysql será iniciado antes do container mvc
+            # Lista as dependências dos serviços. Dessa forma o container do MySQL será iniciado antes do container mvc
             - mysql
 
     # Container do load balancer, resultado do desmembramento do comando:
     # $ docker container run -d --name load-balancer --network front-end -v /d/Projects/Docker/NetCoreProduct/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg -p 3200:80 haproxy
     loadbalancer:
-        # Define um nome para o container
+        # Especifica um nome personalizado para o container, ao invés do nome padrão
         container_name: load-balancer
         # Define a imagem Docker que será utilizada para criar o container
         image: "haproxy"
@@ -133,7 +133,7 @@ services:
             # Define o mapeamento das portas
             - 3200:80
         depends_on:
-            # Diz ao Docker a ordem na qual os containers serão criados. Dessa forma o container mysql será iniciado antes do container mvc
+            # Lista as dependências dos serviços. Dessa forma o container do MySQL será iniciado antes do container mvc
             - mvc1
             - mvc2
             - mvc3

@@ -189,11 +189,19 @@ $ docker network connect <my-network> <container_name>
 
 DOCKER COMPOSE
 
-* Verifica a sintaxe do arquivo de composição e faz build da imagem:
+* Verifica a sintaxe do arquivo de composição e cria a imagem:
 $ docker-compose build
+
+* Verifica a sintaxe do arquivo de composição e cria a imagem, utilizando um arquivo com nome diferente do padrão:
+$ docker-compose -f docker-compose-dev.yml -p dev build
+-p: utiliza um nome de projeto alternativo para nomear os elementos criados pelo arquivo de composição
 
 * Processa o arquivo de composição em segundo plano e inicia a aplicação:
 $ docker-compose up -d
+
+* Processa o arquivo de composição em segundo plano e inicia a aplicação, utilizando um arquivo com nome diferente do padrão:
+$ docker-compose -f docker-compose-dev.yml -p dev up
+-p: utiliza um prefixo para nomear os elementos criados pelo arquivo de composição
 
 * Verifica os containeres criados:
 $ docker-compose ps
