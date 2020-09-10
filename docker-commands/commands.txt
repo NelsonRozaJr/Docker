@@ -37,6 +37,17 @@ $ docker container start <container_id>
 $ docker container start -ia <container_id>
 -ia: inicia o container no modo interativo com terminal atachado.
 
+* Acessa o terminal de um container executando em background.
+- Ao sair do container usando "exit", o mesmo é parado.
+- Ao sair do container usando a combinação de teclas ^P e ^Q, o container continua em execução (^ = Ctrl).
+$ docker container attach <container_id>
+
+* Copia um arquivo de dentro do container para o diretório corrente do host:
+$ docker container cp <container_name>:/tmp/File01.txt .
+
+* Copia um arquivo do diretório atual do host para dentro do container:
+$ docker container cp File01.txt relaxed_morse:/tmp/File01.txt
+
 * Executa um comando em um container em execução:
 $ docker container exec <container_id> <command>
 
