@@ -57,6 +57,16 @@ $ docker container stop <container_id>
 * Obtém informações do container e execução, como uso de cpu, de memória, I/O, etc.:
 $ docker container stats <container_id>
 
+* Faz backup de um container, exportando o seu sistema de arquivos na forma compactada:
+$ docker container export <container_id> | gzip > container_export.tar.gz
+
+* Descompacta e importa o container de backup na forma de uma imagem:
+-: Concatena a saída do comando anterior.
+$ zcat container_export.tar.gz | docker import - container_import
+
+* Containeres importados na forma de imagem devem especificar o comando ao criar o container:
+$ docker container run -it container_import bash
+
 ========================================================================================================================================
 
 IMAGENS
@@ -77,6 +87,18 @@ $ docker image rm <image_id>
 
 * Exibe informações detalhadas de uma imagem:
 $ docker image inspect <image_id>
+
+* Faz backup de uma imagem na forma compactada:
+$ docker image save <image_id> | gzip > image_export.tar.gz
+
+* Importa uma imagem compactada:
+$ docker image load < image_export.tar.gz
+
+========================================================================================================================================
+
+BUSCA DE IMAGENS NO DOCKER HUB
+
+$ docker search nano
 
 ========================================================================================================================================
 
