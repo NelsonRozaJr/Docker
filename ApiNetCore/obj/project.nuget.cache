@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "1zNu5Vj3Sn54UcUXxdpE3K5BewfIojoORx4loqq8lLS4or+/wgOsfNfcTJ92UZEJtUkWP2aHIRtvMTqJQNLoGw==",
+  "success": true,
+  "projectFilePath": "D:\\Documents\\Visual Studio 2019\\Projects\\Docker\\ApiNetCore\\ApiNetCore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.10.9\\microsoft.visualstudio.azure.containers.tools.targets.1.10.9.nupkg.sha512"
+  ],
+  "logs": []
+}

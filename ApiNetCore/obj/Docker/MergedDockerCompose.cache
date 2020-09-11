@@ -1,0 +1,18 @@
+services:
+  apinetcore:
+    build:
+      context: D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: apinetcore
+    ports:
+    - published: 3000
+      target: 80
+    - published: 3001
+      target: 443
+    volumes:
+    - /c/Users/Administrator/AppData/Roaming/ASP.NET/Https:/root/.aspnet/https:ro
+    - /c/Users/Administrator/AppData/Roaming/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+version: '3.4'

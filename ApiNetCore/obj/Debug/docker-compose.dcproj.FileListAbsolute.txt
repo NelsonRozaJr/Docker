@@ -1,0 +1,9 @@
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\bin\Debug\appsettings.Development.json
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\bin\Debug\appsettings.json
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\bin\Debug\Properties\launchSettings.json
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\bin\Debug\ApiNetCore.exe
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\bin\Debug\ApiNetCore.dll
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\bin\Debug\ApiNetCore.pdb
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\obj\Debug\docker-compose.dcprojAssemblyReference.cache
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache
+D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore\obj\Debug\docker-compose.dcproj.CopyComplete

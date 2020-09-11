@@ -1,0 +1,12 @@
+# PM> docker-compose build
+# PM> docker-compose -p dev up
+# Acessar http://192.168.99.100:3000/api/weatherforecast
+
+version: '3.4'
+
+services:
+  apinetcore:
+    image: ${DOCKER_REGISTRY-}apinetcore
+    build:
+      context: .
+      dockerfile: Dockerfile
