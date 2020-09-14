@@ -3,11 +3,19 @@ services:
     build:
       context: D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore
       dockerfile: Dockerfile
+    container_name: catalog-api
+    depends_on:
+    - mysql
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
-    image: apinetcore
     ports:
     - published: 3000
       target: 80
+  mysql:
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Pa$$w0rd
+      bind-address: 0.0.0.0
+    image: mysql
 version: '3.4'

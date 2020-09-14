@@ -3,7 +3,6 @@ version: '3.4'
 services:
   apinetcore:
     image: apinetcore:dev
-    container_name: ApiNetCore
     build:
       target: base
       labels:

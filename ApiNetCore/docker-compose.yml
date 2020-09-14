@@ -1,12 +1,36 @@
-# PM> docker-compose build
-# PM> docker-compose -p dev up
-# Acessar http://192.168.99.100:3000/api/weatherforecast
+# Criar a migracao inicial:
+# $ dotnet-ef migrations add InitialConfiguration -o Infrastructure/Migrations --project ApiNetCore.csproj --startup-project ApiNetCore.csproj
+
+# Executar o compose:
+# $ docker-compose up -d
+
+# Acessar http://192.168.99.100:3000/api/v1/catalog/items
 
 version: '3.4'
 
+networks:
+  back-end:
+
 services:
-  apinetcore:
-    image: ${DOCKER_REGISTRY-}apinetcore
+  webapi:
+    container_name: catalog-api
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - back-end
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - db
+    restart: on-failure
+  db:
+    container_name: mysql
+    image: mysql
+    networks:
+      - back-end
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+      - bind-address=0.0.0.0
