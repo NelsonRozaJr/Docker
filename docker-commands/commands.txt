@@ -211,7 +211,8 @@ REDES VIRTUAIS OU DEFINIDAS POR SOFTWARE
 * Exibe as redes virtuais do Docker. A rede "bridge" é a rede padrão na qual os containeres são incluidos. Os containers que estão nessa rede podem se comunicar via protocolo TCP/IP
 $ docker network ls
 
-* Inspeciona o driver de rede especificado. O Docker configura a rede virtual e atribui um endereço IP a cada container em execução, que são exibidos na seção "Containers":
+* Inspeciona o driver de rede especificado. O Docker configura a rede virtual e atribui um endereço IP a cada container em execução, 
+que são exibidos na seção "Containers":
 $ docker network inspect bridge
 
 * Cria uma rede personalizada. O nome do container passa a agir como um host name.
@@ -220,6 +221,11 @@ $ docker network create --driver bridge <my-network>
 
 * Cria um container configurando uma rede personalizada:
 $ docker container run -it --network <my-network> --name <container_name> alpine
+
+* Cria um container baseado na imagem do apache sem "ponte" entre o host e o container. Dessa forma é possível acessar o container sem 
+informar a porta de acesso:
+$ docker container run -d --network host httpd
+$ curl 192.168.99.100
 
 * Associa um container a uma rede customizada:
 $ docker network connect <my-network> <container_name>

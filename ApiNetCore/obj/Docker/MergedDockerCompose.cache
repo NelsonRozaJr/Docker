@@ -8,7 +8,7 @@ services:
       bind-address: 0.0.0.0
     image: mysql
     networks:
-      back-end: null
+      back-end: {}
   webapi:
     build:
       context: D:\Documents\Visual Studio 2019\Projects\Docker\ApiNetCore
@@ -19,7 +19,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     networks:
-      back-end: null
+      back-end: {}
     ports:
     - published: 3000
       target: 80
