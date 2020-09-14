@@ -1,0 +1,12 @@
+﻿version: '3.4'
+
+services:
+  webapi:
+    ports:
+      - "3000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  db:
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+      - bind-address=0.0.0.0

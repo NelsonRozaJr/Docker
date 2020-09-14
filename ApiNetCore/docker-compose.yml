@@ -17,12 +17,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "3000:80"
     networks:
       - back-end
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       - db
     restart: on-failure
@@ -31,6 +27,3 @@ services:
     image: mysql
     networks:
       - back-end
-    environment:
-      - MYSQL_ROOT_PASSWORD=12345678
-      - bind-address=0.0.0.0
