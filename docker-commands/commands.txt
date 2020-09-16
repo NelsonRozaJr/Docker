@@ -11,6 +11,9 @@ $ docker container ps -a
 * Lista os ids de todos os containeres em execução:
 $ docker container ps -q
 
+* Lista todos os containeres em execução, especificando também o tamanho:
+$ docker container ps -s
+
 * Inspeciona o container:
 $ docker container inspect <container_id>
 
