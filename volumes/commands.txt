@@ -1,3 +1,5 @@
 $ docker container run -d --name nginx-home -p 5000:80 -v /d/Projects/Docker/volumes/nginx/html:/usr/share/nginx/html nginx
 
 $ docker container run -d --name nginx-logs -p 5000:80 -v /d/Projects/Docker/volumes/nginx/logs:/var/log/nginx nginx
+
+$ docker container run -d -p 4040:80 -v /d/Projects/Docker/volumes/apache/html:/usr/local/apache2/htdocs/ httpd
