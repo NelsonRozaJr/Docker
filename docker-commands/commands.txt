@@ -49,7 +49,7 @@ $ docker container attach <container_id>
 $ docker container cp <container_name>:/tmp/File01.txt .
 
 * Copia um arquivo do diretório atual do host para dentro do container:
-$ docker container cp File01.txt relaxed_morse:/tmp/File01.txt
+$ docker container cp File01.txt <container_name>:/tmp/File01.txt
 
 * Executa um comando em um container em execução:
 $ docker container exec <container_id> <command>
