@@ -5,3 +5,14 @@ $ docker container run -d --name nginx-home -p 5000:80 -v /d/Projects/Docker/bin
 $ docker container run -d --name nginx-logs -p 5000:80 -v /d/Projects/Docker/bind-mount/nginx/logs:/var/log/nginx nginx
 
 $ docker container run -d -p 4040:80 -v /d/Projects/Docker/bind-mount/apache/html:/usr/local/apache2/htdocs/ httpd
+
+* Backup de dados utilizando um container criado a partir da imagem busybox e dois mapeamentos de volumes, com bind-mount e docker volume:
+- /d/Projects/Docker/bind-mount/backup: pasta do host
+- /tmp: pasta temporária dentro do container do busybox, destino do arquivo .tar
+- storage: volume associado ao container web01
+- /root: pasta temporária dentro do container do busybox, mapeada a partir do volume storage
+- Finalmentem gera um tar da pasta root (associada ao volume) diretamente na pasta tmp, que está associada a uma pasta do host
+
+$ docker volume create storage
+$ docker container run -d --name web01 -p 8080:80 -v storage:/usr/local/apache2/htdocs httpd
+$ docker container run --rm -v /d/Projects/Docker/bind-mount/backup:/tmp -v storage:/root busybox tar cvf /tmp/backup.tar /root
