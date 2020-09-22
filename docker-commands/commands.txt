@@ -72,7 +72,7 @@ $ docker container run -it container_import bash
 
 ========================================================================================================================================
 
-IMAGENS
+IMAGES
 
 Obs.: <image_id> - Id ou nome de uma imagem.
 
@@ -99,7 +99,7 @@ $ docker image load < image_export.tar.gz
 
 ========================================================================================================================================
 
-BUSCA DE IMAGENS NO DOCKER HUB
+BUSCA DE IMAGES NO DOCKER HUB
 
 $ docker search nano
 
@@ -118,7 +118,7 @@ $ docker image push nelsonrzjunior/course:debian8
 
 ========================================================================================================================================
 
-UPLOAD DE IMAGEM PARA O DOCKER HUB
+UPLOAD DE IMAGE PARA O DOCKER HUB
 
 * Para gerar o token de senha: https://hub.docker.com/settings/security. Somente necessário informar as credenciais na primeira vez:
 $ docker login --username nelsonrzjunior --password 053174f3-e3b5-4cff-b501-983198a34f27
@@ -231,6 +231,9 @@ $ docker network create --driver bridge <my-network>
 * Cria um container configurando uma rede personalizada:
 $ docker container run -it --network <my-network> --name <container_name> alpine
 
+* Cria um container configurando uma rede personalizada e especificando o IP:
+$ docker container run -it --network <my-network> --ip 10.0.0.254 -p 9090:80 nginx
+
 * Cria um container baseado na imagem do apache sem "ponte" entre o host e o container. Dessa forma é possível acessar o container sem 
 informar a porta de acesso:
 $ docker container run -d --network host httpd
@@ -238,6 +241,10 @@ $ curl 192.168.99.100
 
 * Associa um container a uma rede customizada:
 $ docker network connect <my-network> <container_name>
+
+* Criação de um container do MySql e posteriormente do WordPress, acessando o banco mysql a partir de uma rede personalizada:
+$ docker container run -d --name db-wordpress -e MYSQL_ROOT_PASSWORD=mysql --network wordpress-net mysql
+$ docker container run -d --name wordpress --network wordpress-net -p 3030:80 -e WORDPRESS_DB_HOST=db-wordpress -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_PASSWORD=mysql wordpress
 
 ========================================================================================================================================
 
