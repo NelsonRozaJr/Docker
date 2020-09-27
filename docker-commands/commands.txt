@@ -107,6 +107,9 @@ $ docker search nano
 
 BUILD DE IMAGES
 
+* Cria uma imagem a partir de um container temporário. 
+$ docker commit <container_name> <image_name>:<tag>
+
 $ docker image build -t debian/nginx:1.0 .
 -t: Nome e opcionalmente uma tag no formato 'name:tag'.
 .: Informa que o arquivo Dockerfile está no mesmo diretório em que o comando é executado.
@@ -196,6 +199,13 @@ $ docker container run -itd --name <container_name> --tmpfs /tmp busybox
 
 * Verifica a utilização do espaço em disco dentro do container:
 $ docker container exec <container_name> df -h
+
+* Cria um container do debian e instala o web server apache nesse container:
+$ docker container run -itd -p 9090:80 --name cont1 debian
+$ docker container exec -it cont1 bash
+/# apt-get update && apt-get install apache2
+/# exit
+$ docker container exec -d cont1 /usr/sbin/apache2ctl -D FOREGROUND
 
 ========================================================================================================================================
 
