@@ -1,0 +1,2 @@
+FROM httpd
+COPY web2/. /usr/local/apache2/htdocs
