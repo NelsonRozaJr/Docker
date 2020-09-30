@@ -1,0 +1,9 @@
+# $ docker image build -t my-image . -f Dockerfile.figlet
+# $ docker container run my-image
+# $ docker container run -it my-image bash
+
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install figlet -y
+# Comando/argumento padrão a ser executado, sendo possível sobrescrevê-lo (executando um bash, por exemplo)
+CMD figlet -f script hello

@@ -1,0 +1,5 @@
+# $ docker image build -t ping1 . -f Dockerfile.ping
+# $ docker container run -it ping1
+
+FROM busybox
+ENTRYPOINT [ "ping", "localhost" ]

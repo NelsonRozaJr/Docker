@@ -1,0 +1,11 @@
+# $ docker image build -t apache_ubuntu . -f Dockerfile.ubuntu
+# $ docker container run -d --name web1 -p 8080:80 apache_ubuntu /usr/sbin/apache2ctl -D FOREGROUND
+# Acessar http://dockerhost:8080/
+
+FROM ubuntu
+# Evita interação com tzdata durante processo
+ARG DEBIAN_FRONTEND=noninteractive
+# Atualiza o repositório
+RUN apt-get update
+# -y: Não exibe prompt de confirmação
+RUN apt-get install apache2 -y

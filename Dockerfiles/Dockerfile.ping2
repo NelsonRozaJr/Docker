@@ -1,0 +1,8 @@
+# $ docker image build -t ping2 . -f Dockerfile.ping2
+# $ docker container run -it ping2
+# $ docker container run -it ping2 google.com
+
+FROM busybox
+ENTRYPOINT [ "ping" ]
+# Pode ser sobrescrito com a utilização de outros argumentos
+CMD [ "localhost" ]

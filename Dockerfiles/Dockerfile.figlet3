@@ -1,0 +1,13 @@
+# $ docker image build -t my-image . -f Dockerfile.figlet3
+# $ docker container run my-image
+
+# Sobrescreve o comando base do ENTRYPOINT:
+# $ docker container run -it --entrypoint bash my-image
+
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install figlet -y
+# Define um "comando base" (e seus parâmetros) para o container
+ENTRYPOINT [ "figlet", "-f", "script" ]
+# Se não for especificado um argumento diferente quando iniciarmos o container, este valor será usado, por padrão.
+CMD [ "Hello world!" ]

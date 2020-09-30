@@ -1,0 +1,11 @@
+# $ docker image build -t apache_cmd . -f Dockerfile.apache2
+# $ docker container run -d --name my-container -p 9090:80 apache_cmd
+# Acessar http://dockerhost:9090/
+
+FROM ubuntu
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install apache2 -y
+WORKDIR /var/www/html
+COPY /html/index.html .
+EXPOSE 80
+CMD [ "/usr/sbin/apache2ctl", "-D", "FOREGROUND" ]
