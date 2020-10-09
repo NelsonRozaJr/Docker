@@ -1,0 +1,73 @@
+version: "3"
+
+networks: 
+    front-end:
+        internal: false
+    back-end:
+        internal: true
+
+volumes: 
+    DbData:
+    WpData:
+
+services: 
+    mysql:
+        image: mysql:8.0
+        container_name: mysql
+        volumes: 
+            - DbData:/var/lib/mysql
+        networks: 
+            - back-end
+        environment: 
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: WordPressDb
+            MYSQL_USER: userwp
+            MYSQL_PASSWORD: 12345678
+
+    wordpress1:
+        image: wordpress:5.5.1-php7.4
+        container_name: wordpress1
+        volumes:
+            - WpData:/var/www/html
+        networks: 
+            - back-end
+        ports:
+            - 81:80
+        environment:
+            WORDPRESS_DB_HOST: mysql:3306
+            WORDPRESS_DB_NAME: WordPressDb
+            WORDPRESS_DB_USER: userwp
+            WORDPRESS_DB_PASSWORD: 12345678
+        depends_on: 
+            - mysql
+        restart: always
+
+    wordpress2:
+        image: wordpress:5.5.1-php7.4
+        container_name: wordpress2
+        volumes:
+            - WpData:/var/www/html
+        networks: 
+            - back-end
+        ports:
+            - 82:80
+        environment:
+            WORDPRESS_DB_HOST: mysql:3306
+            WORDPRESS_DB_NAME: WordPressDb
+            WORDPRESS_DB_USER: userwp
+            WORDPRESS_DB_PASSWORD: 12345678
+        depends_on: 
+            - mysql
+        restart: always
+
+    loadbalancer:
+        container_name: loadbalancer
+        image: haproxy:2.2
+        volumes: 
+            - /d/Projects/Docker/compose/wordpress/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+        networks: 
+            - front-end
+            - back-end
+        ports: 
+            - 5050:80
+        restart: always
