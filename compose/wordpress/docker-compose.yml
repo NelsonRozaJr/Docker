@@ -70,4 +70,7 @@ services:
             - back-end
         ports: 
             - 5050:80
+        depends_on: 
+            - wordpress1
+            - wordpress2
         restart: always
