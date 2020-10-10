@@ -124,7 +124,7 @@ $ docker image push nelsonrzjunior/course:debian8
 UPLOAD DE IMAGE PARA O DOCKER HUB
 
 * Para gerar o token de senha: https://hub.docker.com/settings/security. Somente necessário informar as credenciais na primeira vez:
-$ docker login --username nelsonrzjunior --password 053174f3-e3b5-4cff-b501-983198a34f27
+$ docker login --username nelsonrzjunior --password 230eca8e-ab5a-4a8b-9422-857ea23653c1
 $ docker tag netcoreproduct:1.0 nelsonrzjunior/course:netcoreproduct-1.0
 $ docker push nelsonrzjunior/course:netcoreproduct-1.0
 
