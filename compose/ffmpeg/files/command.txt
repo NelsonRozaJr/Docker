@@ -1,0 +1,1 @@
+$ docker run -v /d/Projects/Docker/compose/ffmpeg/files:/tmp/ffmpeg opencoconut/ffmpeg -i sample.mp4 result.webm
