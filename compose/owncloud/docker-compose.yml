@@ -1,31 +1,61 @@
-version: "3"
+# $ docker-compose up -d
+
+version: "3.7"
+
+volumes: 
+    db-data:
+    owncloud-data:
 
 networks: 
-    net-backend:
+    backend:
 
-services:
-    mysql:
+services: 
+    db:
+        # A imagem mysql:8.0 gera problemas de conexão ao configurar o banco de dados no Owncloud
+        image: mysql:5.7
         container_name: mysql
-        image: mysql:5.5
         volumes: 
-            - /d/Projects/Docker/compose/owncloud/home/data:/var/lib/mysql
-            #- /d/Projects/Docker/compose/owncloud/etc/localtime:/etc/localtime:ro
-        networks: 
-            - net-backend
+            # Mapeamento de pastas (bind-mount) não funciona corretamente no Windows, necessário utilizar o docker volume
+            - db-data:/var/lib/mysql
+            - /d/Projects/Docker/phpmyadmin/mysql/custom:/etc/mysql/conf.d
         environment: 
-            MYSQL_ROOT_PASSWORD: pass
+            - MYSQL_ROOT_PASSWORD=pass
+            # Timezone entre host e container
+            - TZ=America/Sao_Paulo
+        networks: 
+            - backend
         restart: always
+
+    myadmin:
+        image: phpmyadmin/phpmyadmin:5.0
+        container_name: myadmin
+        environment: 
+            - PMA_HOST=db
+            # Timezone entre host e container
+            - TZ=America/Sao_Paulo
+        ports: 
+            - 8080:80
+        networks: 
+            - backend
+        restart: always
+        depends_on: 
+            - db
 
     owncloud:
         container_name: owncloud
-        image: owncloud
+        image: owncloud:10.0
         volumes: 
+            # Mapeamento de pastas (bind-mount) não funciona corretamente no Windows, necessário utilizar o docker volume
+            - owncloud-data:/var/www/html/data
             - /d/Projects/Docker/compose/owncloud/home/apps:/var/www/html/apps
             - /d/Projects/Docker/compose/owncloud/home/config:/var/www/html/config
-            - /d/Projects/Docker/compose/owncloud/home/data:/var/www/html/data
-            #- /d/Projects/Docker/compose/owncloud/etc/localtime:/etc/localtime:ro
+            # Timezone entre host e container
+            - TZ=America/Sao_Paulo
         networks: 
-            - net-backend
+            - backend
         ports: 
-            - 9090:80
+            - 9010:80
         restart: always
+        depends_on: 
+            - db
+            

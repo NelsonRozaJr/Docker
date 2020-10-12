@@ -15,6 +15,7 @@ services:
         image: mysql:8.0
         container_name: mysql
         volumes: 
+            # Mapeamento de pastas (bind-mount) não funciona corretamente no Windows, necessário utilizar o docker volume
             - db-data:/var/lib/mysql
             - /d/Projects/Docker/phpmyadmin/mysql/custom:/etc/mysql/conf.d
         environment: 
